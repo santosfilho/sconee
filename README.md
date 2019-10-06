@@ -27,3 +27,19 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+## CRIAÇÃO
+### axios
+```
+npm i --save axios
+```
+### bootstrap
+```
+npm install bootstrap
+```
+### vue-tables-2
+```
+npm i vue-tables-2
+```
