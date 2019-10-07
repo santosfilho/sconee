@@ -54,7 +54,8 @@ export default {
     getDataHora(dataHora) {
       //Separando data da hora
       dataHora = dataHora.split("T");
-      //convertendo de AAAA-MM-DD para DD-MM-AAAA Troca posições: this.splice(new, 0, this.splice(old, 1)[0])
+      //convertendo de AAAA-MM-DD para DD-MM-AAAA 
+      //Troca posições: this.splice(new, 0, this.splice(old, 1)[0])
       dataHora[0] = dataHora[0].split("-")
       dataHora[0].splice(2, 0, dataHora[0].splice(0, 1)[0])
       dataHora[0].splice(1, 0, dataHora[0].splice(0, 1)[0])
