@@ -9,7 +9,7 @@
             </a>
           </v-client-table>
         </div>
-        <button class="btn btn-primary"  variant="success" >
+        <button class="btn btn-primary"  variant="success" @click="irParaCadastro">
             <span class="glyphicon glyphicon-plus"></span>
           </button>
     </div>
@@ -73,6 +73,9 @@ export default {
         }
         this.table1.data = this.arrayEquipamentos;
       });
+    },
+    irParaCadastro(){
+      this.$router.push('locais/cadastro')
     }
   },
   mounted() {

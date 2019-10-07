@@ -4,6 +4,18 @@ import Home from './views/Home.vue'
 
 Vue.use(Router)
 
+const Evento = () => import(/* webpackChunkName: "eventos" */ './views/Eventos/Evento.vue')
+const EventosList = () => import(/* webpackChunkName: "eventos" */ './views/Eventos/EventosList.vue')
+const EventosCadastro = () => import(/* webpackChunkName: "eventos" */ './views/Eventos/EventosCadastro.vue')
+
+const Equipamento = () => import(/* webpackChunkName: "equipamentos" */ './views/Equipamentos/Equipamento.vue')
+const EquipamentosList = () => import(/* webpackChunkName: "equipamentos" */ './views/Equipamentos/EquipamentosList.vue')
+const EquipamentosCadastro = () => import(/* webpackChunkName: "equipamentos" */ './views/Equipamentos/EquipamentosCadastro.vue')
+
+const Local = () => import(/* webpackChunkName: "locais" */ './views/Locais/Local.vue')
+const LocaisList = () => import(/* webpackChunkName: "locais" */ './views/Locais/LocaisList.vue')
+const LocalCadastro = () => import(/* webpackChunkName: "locais" */ './views/Locais/LocalCadastro.vue')
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -23,15 +35,31 @@ export default new Router({
     },{
       path: '/eventos',
       name: 'eventos',
-      component: () => import(/* webpackChunkName: "eventos" */ './views/Eventos/EventosList.vue')
+      components:{ 
+        default: Evento
+      },
+      props: true,
+      children: [
+        {path: '', component: EventosList},
+        {path: 'cadastro', component: EventosCadastro}
+      ]
     },{
       path: '/equipamentos',
-      name: 'equipamentos',
-      component: () => import(/* webpackChunkName: "equipamentos" */ './views/Equipamentos/EquipamentosList.vue')
+      components:{
+        default: Equipamento
+      },
+      props: true,
+      children: [
+        {path: '', component: EquipamentosList},
+        {path:'cadastro', component: EquipamentosCadastro}
+      ]
     },{
       path: '/locais',
-      name: 'locais',
-      component: () => import(/* webpackChunkName: "locais" */ './views/Locais/LocaisList.vue')
+      components:{ default: Local },
+      children: [
+        {path: '', component: LocaisList},
+        {path: 'cadastro', component: LocalCadastro}
+      ]
     }
   ]
 })

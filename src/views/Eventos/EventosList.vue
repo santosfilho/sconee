@@ -9,9 +9,9 @@
             </a>
           </v-client-table>
         </div>
-        <button class="btn btn-primary"  variant="success" >
-            <span class="glyphicon glyphicon-plus"></span>
-          </button>
+        <button class="btn btn-primary adicionar"  variant="success" @click="irParaCadastro">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
     </div>
 </template>
 <script>
@@ -87,6 +87,9 @@ export default {
         }
         this.table1.data = this.arrayEventos;
       });
+    },
+    irParaCadastro(){
+      this.$router.push('eventos/cadastro')
     }
   },
   mounted() {
@@ -98,5 +101,8 @@ export default {
 .acao{
   cursor: pointer;
   margin-left: 10px;
+}
+.adicionar{
+  cursor: pointer;
 }
 </style>
