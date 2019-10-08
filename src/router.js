@@ -16,6 +16,10 @@ const Local = () => import(/* webpackChunkName: "locais" */ './views/Locais/Loca
 const LocaisList = () => import(/* webpackChunkName: "locais" */ './views/Locais/LocaisList.vue')
 const LocalCadastro = () => import(/* webpackChunkName: "locais" */ './views/Locais/LocalCadastro.vue')
 
+const Categoria = () => import(/* webpackChunkName: "Categorias" */ './views/Categorias/Categoria.vue')
+const CategoriasList = () => import(/* webpackChunkName: "Categorias" */ './views/Categorias/CategoriasList.vue')
+const CategoriaCadastro = () => import(/* webpackChunkName: "Categorias" */ './views/Categorias/CategoriaCadastro.vue')
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -59,6 +63,13 @@ export default new Router({
       children: [
         {path: '', component: LocaisList},
         {path: 'cadastro', component: LocalCadastro}
+      ]
+    },{
+      path: '/categorias',
+      components:{ default: Categoria },
+      children: [
+        {path: '', component: CategoriasList},
+        {path: 'cadastro', component: CategoriaCadastro}
       ]
     }
   ]

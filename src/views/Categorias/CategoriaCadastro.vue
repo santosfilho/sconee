@@ -15,18 +15,20 @@
                     <input type="time" v-model="evento.fimCron.hora">
                 </Rotulo>
                 <div class="indentificacao">
-                    <Rotulo nome="Localização">
+                    <Rotulo nome="Locais">
                         <select v-model="idLocal">
                             <option v-for="locais in arrayLocais"
                                 :value="locais.idLocal"
                                 :key="locais.idLocal">{{locais.localizacao}}</option>
                         </select>
-                        <select v-model="evento.idEquipamento">
+                        <select  v-if="arrayEquipamentos.filter((value) => {return value.local == this.idLocal}).length > 0" v-model="evento.idEquipamento">
                             <option v-for="equipamento in arrayEquipamentos.filter((value) => {return value.local == this.idLocal})"
                                 :value="equipamento.id"
                                 :key="equipamento.id">{{equipamento.nome}}</option>
                         </select>
-                    </Rotulo>                    
+                    </Rotulo>
+                    <!--tiposStatus.filter((value) => {return value.codigo >= 0})-->
+                    
                 </div>
                 <Rotulo nome="Ação">
                     <select v-model="evento.status">
@@ -37,7 +39,7 @@
                     </select>
                 </Rotulo>
                 <hr>
-				<button @click.prevent="postEvento" type="button" class="btn btn-success">Adicionar</button>
+				<button @click.prevent="postEvento" type="button" class="btn btn-success">Cadastrar</button>
             </form>
         </div>
     </div>
@@ -62,7 +64,7 @@ export default {
                 idEquipamento: 0,
                 status: 0
             },
-            idLocal: 1,
+            idLocal: 0,
             equipamento: {
                 idEquipamento: "",
                 idLocal: "",

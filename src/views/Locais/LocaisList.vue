@@ -17,18 +17,11 @@
 <script>
 //import { PaperTable } from "@/components";
 const tableColumns = [
-  //"id",
-  "local",
-  "categoria",
-  "nome",
-  "descricao",
-  // "Marca",
-  // "Tombamento",
-  // "Modelo",
-  "status",
-  "acao"
-  // "Potencia",
-  // "Data Cadastro"
+  "idLocal",
+  "localizacao",
+  "setor",
+  "capacidade",
+  "descricao"
 ];
 
 export default {
@@ -43,43 +36,40 @@ export default {
         data: [],
         options: {
           headings: {
-            //id: "ID",
-            local: "LOCAL",
-            categoria: "CATEGORIA",
-            nome: "NOME",
-            descricao: "DESCRICAO",
-            status: "STATUS",
-            acao: "AÇÃO"
+            idLocal: "ID",
+            localizacao: "Localização",
+            setor: "Setor",
+            capacidade: "Capacidade",
+            descricao: "Descrição"
           },
           sortable: ["nome", "local", "status", "descricao"],
           filterable: ["nome", "descricao"]
         }
       },
-      arrayEquipamentos: []
+      arrayLocais: []
     };
   },
   methods: {
-    getEquipamentos() {
-      this.$http.get("equipamentos").then(res => {
-        for (var i = 0; i < res.data.length; i++) {
-          this.arrayEquipamentos.push({
-            //id: res.data[i].idEquipamento,
-            local: res.data[i].idLocal,
-            categoria: res.data[i].idCategoria,
-            nome: res.data[i].nome,
-            descricao: res.data[i].descricao,
-            status: res.data[i].status
-          });
-        }
-        this.table1.data = this.arrayEquipamentos;
-      });
+    getLocais(){
+        this.$http.get("locais").then(res => {
+            for (var i = 0; i < res.data.length; i++) {
+                this.arrayLocais.push({
+                    idLocal: res.data[i].idLocal,
+                    localizacao: res.data[i].localizacao,
+                    setor: res.data[i].setor,
+                    capacidade: res.data[i].capacidade,
+                    descricao: res.data[i].descricao
+                });
+            }
+          this.table1.data = this.arrayLocais
+        });
     },
     irParaCadastro(){
       this.$router.push('locais/cadastro')
     }
   },
   mounted() {
-    this.getEquipamentos();
+    this.getLocais();
   }
 };
 </script>

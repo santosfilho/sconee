@@ -9,7 +9,7 @@
             </a>
           </v-client-table>
         </div>
-        <button class="btn btn-primary adicionar"  variant="success" @click="irParaCadastro">
+        <button class="btn btn-primary adicionar" @click="irParaCadastro">
           <span class="glyphicon glyphicon-plus"></span>
         </button>
     </div>
@@ -69,9 +69,9 @@ export default {
     },
     getStatus(status){
       if(status === 1){
-        return "LIGAR"
+        return "LIGADDO"
       } else if(status === 0){
-        return "DESLIGAR"
+        return "DESLIGADO"
       } else {
         return "DESLIGADO - COM DEFEITO"
       }

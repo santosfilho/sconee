@@ -17,7 +17,7 @@ export default {
     .rotulo {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        /*align-items: flex-start; */
         margin: 15px 0px;
         font-size: 1.4rem;
     }
@@ -25,7 +25,7 @@ export default {
     .elemento {
         display: flex;
         align-self: stretch;
-        margin: 10px 0px;
+        /*margin: 10px 0px; */
     }
 
     input, textarea, select {
