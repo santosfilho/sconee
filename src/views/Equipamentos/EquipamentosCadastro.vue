@@ -1,13 +1,42 @@
 <template>
     <div>
         <div class="conteudo">
-            <form class="panel panel-default">
+            <form class="panel panel-default" >
                 <div class="panel-heading">Cadastro Equipamento</div>
                 <Rotulo nome="Nome">
                     <input type="text" v-model="equipamento.nome" placeholder="Nome do Equipamento">
                 </Rotulo>
+                <Rotulo nome="Descrição">
+                    <input type="text" v-model="equipamento.descricao" placeholder="Descrição ">
+                </Rotulo>
+                <Rotulo nome="Marca/Modelo">
+                    <input type="text" v-model="equipamento.marca" placeholder="Marca">
+                    <input type="text" v-model="equipamento.modelo" placeholder="Modelo">
+                </Rotulo>
+                <Rotulo nome="Tombamento">
+                    <input type="text" v-model="equipamento.tombamento" placeholder="Tombamento">
+                </Rotulo>
+                <Rotulo nome="Potência">
+                    <input type="number" v-model="equipamento.potencia" value="100" placeholder="Potencia em Watts">
+                </Rotulo>
+                <Rotulo nome="Local">
+                    <select v-model="equipamento.idLocal">
+                        <option v-for="locais in arrayLocais"
+                            :value="locais.idLocal"
+                            :key="locais.idLocal">{{locais.localizacao}}</option>
+                    </select>
+                </Rotulo>
+                <Rotulo nome="Categoria">
+                    <select v-model="equipamento.idCategoria">
+                        <option v-for="categoria in arrayCaterorias"
+                            :value="categoria.idCategoria"
+                            :key="categoria.idCategoria">{{categoria.nome}}</option>
+                    </select>
+                </Rotulo>
                 <hr>
-				<button @click.prevent="postEvento" type="button" class="btn btn-success">Adicionar</button>
+				<button type="submit" 
+                    @click="postEquipamento" 
+                    class="btn btn-success" value="Cadastrar">Cadastrar</button>
             </form>
         </div>
     </div>
@@ -20,18 +49,17 @@ export default {
     data() {
         return {
             equipamento: {
-                local:"",
-                categoria:"categoria",
-                nome:"nome",
-                descricao:"descricao",
-                // "Marca",
-                // "Tombamento",
-                // "Modelo",
-                status:"status",
-                acao:"acao"
-                // "Potencia",
-                // "Data Cadastro"
+                idLocal:"",
+                idCategoria: "",
+                nome:"",
+                descricao:"",
+                marca: "",
+                tombamento: "",
+                modelo: "",
+                status:"",
+                potencia: ""
             },
+            erros: [],
             idLocal: 0,
             equipamento: {
                 idEquipamento: "",
@@ -44,6 +72,33 @@ export default {
         }
     },
     methods:{
+        /*checkForm(e){
+            if(this.equipamento.nome && this.equipamento.idlocal && this.equipamento.idCategoria){
+                return true;
+            } else {
+                console.log('preencha saporra!')
+                return false;
+            }
+            e.preventDefault();
+        },*/
+        postEquipamento(){
+            this.$http.post('equipamentos', {
+                idlocal: this.equipamento.idLocal,
+                idCategoria: this.equipamento.idCategoria,
+                nome: this.equipamento.nome,
+                descricao: this.equipamento.descricao,
+                marca: this.equipamento.marca,
+                tombamento: this.equipamento.tombamento,
+                modelo: this.equipamento.modelo,
+                status:this.equipamento.status,
+                potencia: this.equipamento.Potencia
+            }).then(resp => {
+                console.log(resp.data[0])
+                if(resp.data[0].idEquipamento != null){
+                    alert("Cadastrado com sucesso!sssss")
+                }
+            })
+        },
         getLocais(){
             this.$http.get("locais").then(res => {
                 for (var i = 0; i < res.data.length; i++) {
@@ -67,7 +122,7 @@ export default {
     },
     mounted(){
         this.getLocais();
-        this.getEquipamentos();
+        this.getCategorias();
     }
 }
 </script>

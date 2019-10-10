@@ -5,7 +5,8 @@
             <a slot="acao" slot-scope="props" target="_blank" :href="props.row.acao">
               <a title="Detalhes" class="acao glyphicon glyphicon-eye-open"></a>
               <a title="Editar" class="acao glyphicon glyphicon-edit"></a>  
-              <a title="Excluir" class="acao glyphicon glyphicon-trash"></a>
+              <a title="Excluir" class="acao glyphicon glyphicon-trash" 
+                @click="deleteEvento(props.row.id)"></a>
             </a>
           </v-client-table>
         </div>
@@ -53,6 +54,15 @@ export default {
     };
   },
   methods:{
+    deleteEvento(id){
+      if(confirm("Deletar?")){
+        this.$http.delete("eventos/" + id).then( res => {
+          if(res.status == 200){
+            location.reload(); 
+          }
+        })
+      }
+    },
     getDataHora(dataHora) {
       //Separando data da hora
       dataHora = dataHora.split("T");
@@ -80,7 +90,7 @@ export default {
       this.$http.get("eventos").then(res => {
         for (var i = 0; i < res.data.length; i++) {
           this.arrayEventos.push({
-            //id: res.data[i].idEvento,
+            id: res.data[i].idEvento,
             nomeEquipamento: res.data[i].nomeEquipamento,
             localizacao: res.data[i].localizacao,
             status: this.getStatus(res.data[i].status),

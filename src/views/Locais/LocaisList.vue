@@ -1,11 +1,12 @@
 <template>
     <div>
         <div style="width : 99%">
-          <v-client-table :data="table1.data" :columns="table1.columns" :options="table1.options">
+          <v-client-table ref="table" :data="table1.data" :columns="table1.columns" :options="table1.options">
             <a slot="acao" slot-scope="props" target="_blank" :href="props.row.acao">
               <a title="Detalhes" class="acao glyphicon glyphicon-eye-open"></a>
               <a title="Editar" class="acao glyphicon glyphicon-edit"></a>  
-              <a title="Excluir" class="acao glyphicon glyphicon-trash"></a>
+              <a title="Excluir" class="acao glyphicon glyphicon-trash" 
+                  @click="deleteLocal(props.row.idLocal)"></a>
             </a>
           </v-client-table>
         </div>
@@ -21,7 +22,8 @@ const tableColumns = [
   "localizacao",
   "setor",
   "capacidade",
-  "descricao"
+  "descricao",
+  "acao"
 ];
 
 export default {
@@ -40,7 +42,8 @@ export default {
             localizacao: "Localização",
             setor: "Setor",
             capacidade: "Capacidade",
-            descricao: "Descrição"
+            descricao: "Descrição",
+            acao: "Ação"
           },
           sortable: ["nome", "local", "status", "descricao"],
           filterable: ["nome", "descricao"]
@@ -64,12 +67,24 @@ export default {
           this.table1.data = this.arrayLocais
         });
     },
+    deleteLocal(id){
+      if(confirm("Apagar msm?!")){
+        this.$http.delete("locais/" + id).then( res => {
+          if(res.status == 200){
+            location.reload(); 
+          }
+        })
+      }
+    },
     irParaCadastro(){
       this.$router.push('locais/cadastro')
     }
   },
   mounted() {
     this.getLocais();
+  },
+  onUpdate() {
+    this.$refs.table.refresh();
   }
 };
 </script>
