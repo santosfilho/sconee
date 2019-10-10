@@ -43,7 +43,7 @@ export default {
             data_prox_evento: "Data do proximo evento",
             cron: "CRON",
             fim_cron:"Fim CRON",
-            acao: "AÇÃO"
+            acao: ""
           },
           sortable: ["status"],
           filterable: ["status"]

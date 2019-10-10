@@ -51,7 +51,7 @@ export default {
             nome: "NOME",
             descricao: "DESCRICAO",
             status: "STATUS",
-            acao: "AÇÃO"
+            acao: ""
           },
           sortable: ["nome", "local", "status", "descricao"],
           filterable: ["nome", "descricao"]
@@ -79,11 +79,20 @@ export default {
             categoria: res.data[i].idCategoria,
             nome: res.data[i].nome,
             descricao: res.data[i].descricao,
-            status: res.data[i].status
+            status: this.getStatus(res.data[i].status)
           });
         }
         this.table1.data = this.arrayEquipamentos;
       });
+    },
+    getStatus(status){
+      if(status === 1){
+        return "LIGADO"
+      } else if(status === 0){
+        return "DESLIGADO"
+      } else {
+        return "DEFEITUOSO"
+      }
     },
     irParaCadastro(){
       this.$router.push('equipamentos/cadastro')

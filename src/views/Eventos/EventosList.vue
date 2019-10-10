@@ -40,11 +40,11 @@ export default {
             //id:"ID",
             nomeEquipamento: "Equipamento",
             localizacao: "Localizacao",
-            status: "status",
+            status: "Ação",
             data_prox_evento: "Data do proximo evento",
             cron: "CRON",
             fim_cron:"Fim CRON",
-            acao: "AÇÃO"
+            acao: ""
           },
           sortable: ["status"],
           filterable: ["status"]

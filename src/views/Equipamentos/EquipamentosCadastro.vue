@@ -61,11 +61,6 @@ export default {
             },
             erros: [],
             idLocal: 0,
-            equipamento: {
-                idEquipamento: "",
-                idLocal: "",
-                categoria: ""
-            },
             arrayLocais: [],
             arrayEquipamentos: [],
             arrayCaterorias:[]
