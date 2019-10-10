@@ -34,6 +34,10 @@
                     </select>
                 </Rotulo>
                 <hr>
+                <router-link tag="button" class="btn btn-secondary"
+                    to="/equipamentos">
+                    Voltar
+                </router-link>
 				<button type="submit" 
                     @click="postEquipamento" 
                     class="btn btn-success" value="Cadastrar">Cadastrar</button>

@@ -3,43 +3,15 @@
         <div class="conteudo">
             <form class="panel panel-default">
                 <div class="panel-heading">Cadastro Evento</div>
-                <Rotulo nome="CRON">
-                    <input type="text" v-model="evento.cron" placeholder="* */1 * 1/1 * *">
-                </Rotulo>
-                <Rotulo nome="Hora Evento">
-                    <input type="date" v-model="evento.hora.data">
-                    <input type="time" v-model="evento.hora.hora">
-                </Rotulo>
-                <Rotulo nome="Fim do CRON">
-                    <input type="date" v-model="evento.fimCron.data">
-                    <input type="time" v-model="evento.fimCron.hora">
-                </Rotulo>
-                <div class="indentificacao">
-                    <Rotulo nome="Locais">
-                        <select v-model="idLocal">
-                            <option v-for="locais in arrayLocais"
-                                :value="locais.idLocal"
-                                :key="locais.idLocal">{{locais.localizacao}}</option>
-                        </select>
-                        <select  v-if="arrayEquipamentos.filter((value) => {return value.local == this.idLocal}).length > 0" v-model="evento.idEquipamento">
-                            <option v-for="equipamento in arrayEquipamentos.filter((value) => {return value.local == this.idLocal})"
-                                :value="equipamento.id"
-                                :key="equipamento.id">{{equipamento.nome}}</option>
-                        </select>
-                    </Rotulo>
-                    <!--tiposStatus.filter((value) => {return value.codigo >= 0})-->
-                    
-                </div>
-                <Rotulo nome="Ação">
-                    <select v-model="evento.status">
-                        <option v-for="status in tiposStatus"
-                            :value="status.codigo"
-                            :selected="status.codigo === 1"
-                            :key="status.codigo">{{status.nome}}</option>
-                    </select>
+                <b-alert v-if="sucesso.show" :variant="sucesso.variant" show dismissible>{{sucesso.mensagem}}</b-alert>
+                <Rotulo nome="Categoria">
+                    <input type="text" v-model="categoria.nome" placeholder="Nome da Categoria">
                 </Rotulo>
                 <hr>
-				<button @click.prevent="postEvento" type="button" class="btn btn-success">Cadastrar</button>
+                <router-link tag="button" class="btn btn-secondary" to="/categorias">
+                    Voltar
+                </router-link>
+                <button @click="postCategoria" type="button" class="btn btn-success">Cadastrar</button>
             </form>
         </div>
     </div>
@@ -51,77 +23,34 @@ export default {
     components: {Rotulo},
     data() {
         return {
-            evento: {
-                cron: "",
-                fimCron: {
-                    data:"",
-                    hora:""
-                },
-                hora: {
-                    data:"",
-                    hora:""
-                },
-                idEquipamento: 0,
-                status: 0
+            categoria: {
+                nome:''
             },
-            idLocal: 0,
-            equipamento: {
-                idEquipamento: "",
-                idLocal: "",
-                categoria: ""
-            },
-            tiposStatus: [
-                {codigo: 0, nome: "DESLIGAR"},
-                {codigo: 1, nome: "LIGAR"}
-                //{codigo: -1, nome: "DEFEITUOSO"}
-            ],
-            arrayLocais: [],
-            arrayEquipamentos: []
+            sucesso: {
+                show : false,
+                variant : '',
+                mensagem: ''
+            }
         }
     },
     methods:{
-        getLocais(){
-            this.$http.get("locais").then(res => {
-                for (var i = 0; i < res.data.length; i++) {
-                    this.arrayLocais.push({
-                        idLocal: res.data[i].idLocal,
-                        localizacao: res.data[i].localizacao
-                    });
+        postCategoria(){
+            this.$http.post('equipamentos/categorias', {
+                nome: this.categoria.nome
+            }).then(resp => {
+                if(resp.status >= 200 && resp.status < 300){
+                    this.sucesso.show = true;
+                    this.sucesso.variant = 'success';
+                    this.sucesso.mensagem = 'Cadastrado com sucesso!'
+                    this.categoria.nome = '';
                 }
-            });
-        },
-        getEquipamentos() {
-            this.$http.get("equipamentos").then(res => {
-                for (var i = 0; i < res.data.length; i++) {
-                    this.arrayEquipamentos.push({
-                        id: res.data[i].idEquipamento,
-                        local: res.data[i].idLocal,
-                        categoria: res.data[i].idCategoria,
-                        nome: res.data[i].nome,
-                        descricao: res.data[i].descricao,
-                        status: res.data[i].status
-                    });
-                }
-            });
-        },
-        postEvento(){
-            this.$http.post('eventos', {
-                cron: this.evento.cron,
-                fimCron: this.evento.fimCron.data + "T" + this.evento.fimCron.hora,
-                hora: this.evento.hora.data + "T" + this.evento.hora.hora,
-                idEquipamento: this.evento.idEquipamento,
-                status: this.evento.status
+
+            }).catch((error) => {
+                this.sucesso.show = true;
+                this.sucesso.variant = 'danger';
+                this.sucesso.mensagem = 'Verifique o nome da categoria! ' + error;
             })
-            /*this.$http.post('usuarios.json', {
-                    nome: 'José',
-                    email: 'ze@gmail.com'
-		        }).then(res => console.log(res))
-            });*/
         }
-    },
-    mounted(){
-        this.getLocais();
-        this.getEquipamentos();
     }
 }
 </script>
@@ -158,10 +87,6 @@ body {
 	display: flex;
 	flex-direction: column;
 }
-
-
-
-
 
 .painel .cabecalho {
 	width: 100%;

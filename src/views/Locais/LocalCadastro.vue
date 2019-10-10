@@ -16,6 +16,7 @@
                     <input type="number" v-model="local.capacidade" placeholder="Qtd de Pessoas">
                 </Rotulo>
                 <hr>
+                <router-link tag="button" class="btn btn-secondary" to="/locais">Voltar</router-link>
 				<button type="submit" 
                     @click="postLocal" 
                     class="btn btn-success" value="Cadastrar">Cadastrar</button>

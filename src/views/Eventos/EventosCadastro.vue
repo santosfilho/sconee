@@ -37,6 +37,7 @@
                     </select>
                 </Rotulo>
                 <hr>
+                <router-link tag="button" class="btn btn-secondary" to="/eventos">Voltar</router-link>
 				<button @click.prevent="postEvento" type="button" class="btn btn-success">Adicionar</button>
             </form>
         </div>
