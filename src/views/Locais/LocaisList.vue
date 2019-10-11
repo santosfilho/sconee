@@ -18,7 +18,7 @@
 <script>
 //import { PaperTable } from "@/components";
 const tableColumns = [
-  "idLocal",
+  //"idLocal",
   "localizacao",
   "setor",
   "capacidade",

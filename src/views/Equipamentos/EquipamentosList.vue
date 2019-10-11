@@ -13,6 +13,9 @@
         <button class="btn btn-primary adicionar" variant="success" @click="irParaCadastro">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
+        <button type="button" class="btn btn-danger" @click="getEquipamentos">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
         <router-view/>
     </div>
 </template>
@@ -23,7 +26,7 @@ const tableColumns = [
   "local",
   "categoria",
   "nome",
-  "descricao",
+  //"descricao",
   // "Marca",
   // "Tombamento",
   // "Modelo",
@@ -39,8 +42,6 @@ export default {
   data() {
     return {
         table1: {
-        //title: "Equipamentos",
-        //subTitle: "Lista de Equipamentos",
         columns: [...tableColumns],
         data: [],
         options: {
@@ -57,7 +58,9 @@ export default {
           filterable: ["nome", "descricao"]
         }
       },
-      arrayEquipamentos: []
+      arrayEquipamentos: [],
+      arrayLocais: [],
+      arrayCategorias: []
     };
   },
   methods: {
@@ -71,12 +74,13 @@ export default {
       }
     },
     getEquipamentos() {
+      
       this.$http.get("equipamentos").then(res => {
         for (var i = 0; i < res.data.length; i++) {
           this.arrayEquipamentos.push({
             id: res.data[i].idEquipamento,
-            local: res.data[i].idLocal,
-            categoria: res.data[i].idCategoria,
+            local: this.arrayLocais == undefined ? this.arrayLocais.filter((value) => {return res.data[i].idLocal == value.idLocal})[0].localizacao : "Sem local",
+            categoria: this.arrayCategorias == undefined ? this.arrayCategorias.filter((value) => {return res.data[i].idCategoria == value.idCategoria})[0].nome : "Sem Categoria",
             nome: res.data[i].nome,
             descricao: res.data[i].descricao,
             status: this.getStatus(res.data[i].status)
@@ -84,6 +88,26 @@ export default {
         }
         this.table1.data = this.arrayEquipamentos;
       });
+    },
+    getLocais(){
+        this.$http.get("locais").then(res => {
+            for (var i = 0; i < res.data.length; i++) {
+                this.arrayLocais.push({
+                    idLocal: res.data[i].idLocal,
+                    localizacao: res.data[i].localizacao
+                });
+            }
+        });
+    },
+    getCategorias(){
+        this.$http.get("equipamentos/categorias").then(res => {
+            for (var i = 0; i < res.data.length; i++) {
+                this.arrayCategorias.push({
+                    idCategoria: res.data[i].idCategoria,
+                    nome: res.data[i].nome
+                });
+            }
+        });
     },
     getStatus(status){
       if(status === 1){
@@ -99,6 +123,8 @@ export default {
     }
   },
   mounted() {
+    this.getCategorias();
+    this.getLocais();
     this.getEquipamentos();
   }
 };

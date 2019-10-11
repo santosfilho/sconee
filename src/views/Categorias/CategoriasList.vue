@@ -16,7 +16,7 @@
 </template>
 <script>
 const tableColumns = [
-  "idCategoria",
+  //"idCategoria",
   "nome",
   "acao"
 ];
