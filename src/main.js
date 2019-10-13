@@ -6,6 +6,7 @@ import './plugins/axios'
 /* Bootstrap-vue */
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
+import '../src/style/styles.css'
 //import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 

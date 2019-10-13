@@ -112,11 +112,4 @@ export default {
 };
 </script>
 <style>
-.acao{
-  cursor: pointer;
-  margin-left: 10px;
-}
-.adicionar{
-  cursor: pointer;
-}
 </style>

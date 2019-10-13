@@ -3,7 +3,7 @@
         <div class="conteudo">
             <form class="panel panel-default" >
                 <div class="panel-heading">Cadastro Equipamento</div>
-                <Rotulo nome="Nome">
+                <Rotulo nome="Nome*">
                     <input type="text" v-model="equipamento.nome" placeholder="Nome do Equipamento">
                 </Rotulo>
                 <Rotulo nome="Descrição">
@@ -19,14 +19,14 @@
                 <Rotulo nome="Potência">
                     <input type="number" v-model="equipamento.potencia" value="100" placeholder="Potencia em Watts">
                 </Rotulo>
-                <Rotulo nome="Local">
+                <Rotulo nome="Local*">
                     <select v-model="equipamento.idLocal">
                         <option v-for="locais in arrayLocais"
                             :value="locais.idLocal"
                             :key="locais.idLocal">{{locais.localizacao}}</option>
                     </select>
                 </Rotulo>
-                <Rotulo nome="Categoria">
+                <Rotulo nome="Categoria*">
                     <select v-model="equipamento.idCategoria">
                         <option v-for="categoria in arrayCaterorias"
                             :value="categoria.idCategoria"
@@ -60,7 +60,7 @@ export default {
                 marca: "",
                 tombamento: "",
                 modelo: "",
-                status:"",
+                status:"",  
                 potencia: ""
             },
             erros: [],
