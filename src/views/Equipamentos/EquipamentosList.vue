@@ -14,7 +14,7 @@
         </div>
         <a slot="acao" slot-scope="props" target="_blank" :href="props.row.acao">
           <a title="Detalhes" class="acao glyphicon glyphicon-eye-open"></a>
-          <a title="Editar" class="acao glyphicon glyphicon-edit"></a>
+          <router-link tag="a" title="Editar" class="acao glyphicon glyphicon-edit" :to="'/equipamentos/' + props.row.id + '/editar'"/>
           <a
             title="Excluir"
             class="acao glyphicon glyphicon-trash"
@@ -34,10 +34,10 @@
 </template>
 <script>
 const tableColumns = [
+  "nome",
   //"id",
   "localizacao",
   "categoria",
-  "nome",
   //"descricao",
   // "Marca",
   // "Tombamento",
@@ -67,7 +67,7 @@ export default {
             acao: ""
           },
           sortable: ["nome", "local", "status", "descricao"],
-          filterable: ["nome", "descricao"]
+          filterable: ["nome", "descricao", "categoria", "local"]
         }
       } 
     };

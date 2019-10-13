@@ -4,7 +4,8 @@
           <v-client-table ref="table" :data="table1.data" :columns="table1.columns" :options="table1.options">
             <a slot="acao" slot-scope="props" target="_blank" :href="props.row.acao">
               <a title="Detalhes" class="acao glyphicon glyphicon-eye-open"></a>
-              <a title="Editar" class="acao glyphicon glyphicon-edit"></a>  
+              <!-- Pendente de implementar PUT na API -->
+              <router-link tag="a" title="Editar" class="acao glyphicon glyphicon-edit" :to="'/locais/' + props.row.id + '/editar'"/>
               <a title="Excluir" class="acao glyphicon glyphicon-trash" 
                   @click="deleteLocal(props.row.idLocal)"></a>
             </a>
@@ -68,7 +69,7 @@ export default {
         });
     },
     deleteLocal(id){
-      if(confirm("Apagar msm?!")){
+      if(confirm("Deseja Realmente apagar?!")){
         this.$http.delete("locais/" + id).then( res => {
           if(res.status == 200){
             location.reload(); 

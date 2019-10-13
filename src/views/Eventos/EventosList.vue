@@ -4,7 +4,7 @@
           <v-client-table :data="table1.data" :columns="table1.columns" :options="table1.options">
             <a slot="acao" slot-scope="props" target="_blank" :href="props.row.acao">
               <a title="Detalhes" class="acao glyphicon glyphicon-eye-open"></a>
-              <a title="Editar" class="acao glyphicon glyphicon-edit"></a>  
+              <router-link tag="a" title="Editar" class="acao glyphicon glyphicon-edit" :to="'/eventos/' + props.row.id + '/editar'"/>
               <a title="Excluir" class="acao glyphicon glyphicon-trash" 
                 @click="deleteEvento(props.row.id)"></a>
             </a>
