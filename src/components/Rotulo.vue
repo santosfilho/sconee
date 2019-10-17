@@ -37,7 +37,6 @@ export default {
         padding: 5px 10px;
     }
 
-
     input:focus {
         border: 1px solid #BBB;
     }

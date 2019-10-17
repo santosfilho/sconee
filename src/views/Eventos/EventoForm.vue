@@ -4,24 +4,47 @@
       <form class="panel panel-default">
         <div class="panel-heading">{{scope}} Evento</div>
         <Rotulo nome="CRON">
-          <input type="text" v-model="evento.cron" placeholder="* */1 * 1/1 * *" />
+          <div>
+            <input type="checkbox" id="seg"> 
+            <label for="seg">Seg. </label> |
+
+            <input type="checkbox" id="ter">
+            <label for="ter">Ter. </label> |
+
+            <input type="checkbox" id="qua">
+            <label for="qua">Qua. </label> |
+
+            <input type="checkbox" id="qui">
+            <label for="qui">Qui. </label> |
+            
+            <input type="checkbox" id="sex">
+            <label for="sex">Sex. </label> |
+
+            <input type="checkbox" id="sab">
+            <label for="sab">Sab. </label> |
+
+            <input type="checkbox" id="dom">
+            <label for="Dom">Dom. </label>
+            <hr>
+            <input class="form-control" size="1" type="text" v-model="evento.cron" placeholder="CRON PERSONALIZADO EX.: * */1 * 1/1 * *" />
+          </div>
         </Rotulo>
         <Rotulo nome="Hora Evento">
-          <input type="datetime-local" v-model="evento.hora" />
+          <input type="datetime-local" class="form-control" v-model="evento.hora"/>
         </Rotulo>
-        <Rotulo nome="Fim do CRON">
-          <input type="datetime-local" v-model="evento.fimCron" />
+        <Rotulo nome="Fim do Eventos">
+          <input type="datetime-local" class="form-control" v-model="evento.fimCron" />
         </Rotulo>
         <div class="indentificacao">
           <Rotulo nome="Localização">
-            <select v-model="idLocal">
+            <select v-model="idLocal" class="form-control">
               <option
                 v-for="locais in arrayLocais"
                 :value="locais.idLocal"
                 :key="locais.idLocal"
               >{{locais.localizacao}}</option>
             </select>
-            <select v-model="evento.idEquipamento">
+            <select v-model="evento.idEquipamento" class="form-control">
               <option
                 v-for="equipamento in arrayEquipamentos.filter((value) => {return value.idLocal == this.idLocal})"
                 :value="equipamento.id"
@@ -31,7 +54,7 @@
           </Rotulo>
         </div>
         <Rotulo nome="Ação">
-          <select v-model="evento.status">
+          <select v-model="evento.status" class="form-control">
             <option
               v-for="status in tiposStatus"
               :value="status.codigo"
@@ -77,6 +100,7 @@ export default {
             localizacao: res.data[i].localizacao
           });
         }
+        this.getEquipamentos();
       });
     },
     getEquipamentos() {
@@ -91,14 +115,13 @@ export default {
             status: res.data[i].status
           });
         }
-        if(this.evento.idEquipamento != null){
+        if(this.evento.idEquipamento != null && this.evento.idEquipamento > 0){
             this.idLocal = this.arrayEquipamentos.filter((value) => {return value.id== this.evento.idEquipamento})[0].idLocal
         }
       });
     }
   },
   mounted() {
-    this.getEquipamentos();
     this.getLocais();
   }
 };
