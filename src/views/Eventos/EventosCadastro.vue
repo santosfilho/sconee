@@ -27,7 +27,7 @@ export default {
                 hora: this.evento.hora,
                 idEquipamento: this.evento.idEquipamento,
                 status: this.evento.status
-            }).then(res => {
+            }).then(resp => {
                 if(resp.data.idEvento != null){
                     alert("Cadastrado com sucesso!")
                 }

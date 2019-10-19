@@ -1,6 +1,6 @@
 <template>
     <div class="rotulo">
-        <label>{{ nome }}:</label>
+        <label class="control-label">{{ nome }}:</label>
         <div class="elemento">
             <slot></slot>
         </div>
@@ -17,7 +17,7 @@ export default {
     .rotulo {
         display: flex;
         flex-direction: column;
-        /*align-items: flex-start; */
+        align-items: flex-start;
         margin: 15px 0px;
         font-size: 1.4rem;
     }

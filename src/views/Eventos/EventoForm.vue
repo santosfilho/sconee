@@ -1,40 +1,42 @@
 <template>
-  <div>
+  <div id="app">
     <div class="conteudo">
-      <form class="panel panel-default">
+      <form class="panel panel-default form-inline">
         <div class="panel-heading">{{scope}} Evento</div>
-        <Rotulo nome="CRON">
-          <div>
-            <input type="checkbox" id="seg"> 
-            <label for="seg">Seg. </label> |
-
-            <input type="checkbox" id="ter">
-            <label for="ter">Ter. </label> |
-
-            <input type="checkbox" id="qua">
-            <label for="qua">Qua. </label> |
-
-            <input type="checkbox" id="qui">
-            <label for="qui">Qui. </label> |
-            
-            <input type="checkbox" id="sex">
-            <label for="sex">Sex. </label> |
-
-            <input type="checkbox" id="sab">
-            <label for="sab">Sab. </label> |
-
-            <input type="checkbox" id="dom">
-            <label for="Dom">Dom. </label>
-            <hr>
-            <input class="form-control" size="1" type="text" v-model="evento.cron" placeholder="CRON PERSONALIZADO EX.: * */1 * 1/1 * *" />
+        <div nome="CRON">
+          <label class="control-label">Dias da Semana:</label>
+          <div class="form-group" nome="Dias Evento">
+            <input v-model="diasEvento[0]" type="checkbox" id="dom" />
+            <label for="Dom">Dom.</label>
+            |
+            <input v-model="diasEvento[1]" type="checkbox" id="seg" />
+            <label for="seg">Seg.</label>
+            |
+            <input v-model="diasEvento[2]" type="checkbox" id="ter" />
+            <label for="ter">Ter.</label>
+            |
+            <input v-model="diasEvento[3]" type="checkbox" id="qua" />
+            <label for="qua">Qua.</label>
+            |
+            <input v-model="diasEvento[4]" type="checkbox" id="qui" />
+            <label for="qui">Qui.</label>
+            |
+            <input v-model="diasEvento[5]" type="checkbox" id="sex" />
+            <label for="sex">Sex.</label>
+            |
+            <input v-model="diasEvento[6]" type="checkbox" id="sab" />
+            <label for="sab">Sab.</label>
+            <!-- <hr>
+            <input class="form-control" size="1" type="text" v-model="evento.cron" placeholder="CRON PERSONALIZADO EX.: * */1 * 1/1 * *" />-->
           </div>
-        </Rotulo>
-        <Rotulo nome="Hora Evento">
-          <input type="datetime-local" class="form-control" v-model="evento.hora"/>
-        </Rotulo>
+          <Rotulo nome="Hora Evento">
+            <input type="time" class="form-control" v-model="horaEvento" />
+          </Rotulo>
+        </div>
         <Rotulo nome="Fim do Eventos">
           <input type="datetime-local" class="form-control" v-model="evento.fimCron" />
         </Rotulo>
+        <hr />
         <div class="indentificacao">
           <Rotulo nome="Localização">
             <select v-model="idLocal" class="form-control">
@@ -65,7 +67,12 @@
         </Rotulo>
         <hr />
         <router-link tag="button" class="btn btn-secondary" to="/eventos">Voltar</router-link>
-        <button @click="funcButton" type="button" class="btn btn-success">{{scope}}</button>
+        <button
+          @click.prevent="montarCron"
+          @click="funcButton"
+          type="button"
+          class="btn btn-success"
+        >{{scope}}</button>
       </form>
     </div>
   </div>
@@ -85,10 +92,12 @@ export default {
       tiposStatus: [
         { codigo: 0, nome: "DESLIGAR" },
         { codigo: 1, nome: "LIGAR" },
-        { codigo: -1, nome: "DEFEITUOSO"}
+        { codigo: -1, nome: "DEFEITUOSO" }
       ],
       arrayLocais: [],
-      arrayEquipamentos: []
+      arrayEquipamentos: [],
+      diasEvento: [false, false, false, false, false, false, false], //Dom. à Sab.
+      horaEvento: "00:00"
     };
   },
   methods: {
@@ -100,6 +109,7 @@ export default {
             localizacao: res.data[i].localizacao
           });
         }
+        //Popular equipamentos depende do sucesso dos locais terem sido populados
         this.getEquipamentos();
       });
     },
@@ -115,10 +125,68 @@ export default {
             status: res.data[i].status
           });
         }
-        if(this.evento.idEquipamento != null && this.evento.idEquipamento > 0){
-            this.idLocal = this.arrayEquipamentos.filter((value) => {return value.id== this.evento.idEquipamento})[0].idLocal
+        if (this.evento.idEquipamento != null && this.evento.idEquipamento > 0) {
+          this.idLocal = this.arrayEquipamentos.filter(value => {
+            return value.id == this.evento.idEquipamento;
+          })[0].idLocal;
+
+          if(this.evento.idEvento != null && this.evento.idEvento > 0){
+            this.horaEvento = this.evento.hora.split("T")[1];
+            var vetorDias = this.evento.cron.split(" ")[5].split(",");
+            for(var j = 0; j < this.diasEvento.length; j++){
+              this.diasEvento[j] = vetorDias.filter(value => {return value == j})[0] ? true : false
+            }
+          }
+
+          this.montarCron();
         }
       });
+    },
+    montarCron() {
+      var dias = "";
+      for (var i = 0; i < this.diasEvento.length; i++) {
+        if (this.diasEvento[i]) {
+          if (dias.length > 0) {
+            dias += "," + i;
+          } else {
+            dias += i;
+          }
+        }
+      }
+      var dataProxEvento = new Date();
+      var vetorDias = dias.split(",");
+
+      //Mesmo dia? e hora maior q a atual? Show! Faz nada!
+      var praHoje =
+        vetorDias.filter(value => {
+          return (
+            dataProxEvento.getDay() == value && this.horaEvento > new Date().getHours() + ":" + new Date().getMinutes()
+          );
+        }).length > 0 ? true : false;
+
+      if (praHoje === false) {
+        var diasMaiores = vetorDias.filter(value => {return dataProxEvento.getDay() < value})[0]
+        var diasMenores = vetorDias.filter(value => {return dataProxEvento.getDay() >= value})[0];
+        //Há dias maiores q o atual? Pego o primeiro dia maior que o dia atual (atraves de um filter), calculo a diferença e adiciono os dias a data atual.. show!
+        if(diasMaiores != undefined){
+          dataProxEvento.setDate(dataProxEvento.getDate() + (dataProxEvento.getDay() - diasMaiores));
+        }
+
+        //Os dias são menores q o atual? Filtro os valores q são menores ou iguais e pego o primeiro valor do array, calculo a diferença e adiciono os dias a data atual!
+        if(diasMenores != undefined){
+          dataProxEvento.setDate(dataProxEvento.getDate() + (diasMenores - dataProxEvento.getDay()));
+        }
+      }
+
+      this.evento.hora = (dataProxEvento.toISOString()).split("T")[0] + "T" + this.horaEvento;
+      this.evento.cron =
+        "0 " + // Segundos (0 - 59).
+        this.horaEvento.split(":")[1] + // Minutos (0 - 59).
+        " " + 
+        this.horaEvento.split(":")[0] + // Horas (0 - 23).
+        " * " + // Dia (1 - 31).
+        "* " + // Mês (1 - 12).
+        dias; // Dia da semana (0 - 6)
     }
   },
   mounted() {
@@ -127,64 +195,4 @@ export default {
 };
 </script>
 <style>
-/*
-.conteudo {
-    display: flex;
-    justify-content: space-around;
-}
-
-.identificacao{
-    flex-direction: row;
-}
-.panel {
-	flex: 1;
-	background: #FFF;
-	margin: 0px 10px;
-	padding: 20px;
-	border: 1px solid #AAA;
-	border-radius: 5px;
-}
-/*
-body {
-	background-color: #ECECEC;
-}
-
-#app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-
-	display: flex;
-	flex-direction: column;
-}
-
-.painel .cabecalho {
-	width: 100%;
-	background-color: #DDD;
-	padding: 10px 0px;
-	border-radius: 5px;
-	font-size: 1.4rem;
-}
-
-#app form button {
-	float: right;
-	margin: 10px 0px;
-	padding: 10px 20px;
-	font-size: 1.4rem;
-	border-radius: 5px;
-	color: #FFF;
-	background-color: #2196F3;
-}
-
-#app h1 {
-	font-weight: 200;
-	margin: 20px;
-	padding: 0;
-}
-
-.mr-4 {
-	margin-right: 40px;
-}*/
 </style>

@@ -95,7 +95,7 @@ export default {
             localizacao: res.data[i].localizacao,
             status: this.getStatus(res.data[i].status),
             data_prox_evento: this.getDataHora(res.data[i].hora),
-            cron: res.data[i].cron,
+            cron: this.cronParaHumanos(res.data[i].cron),
             fim_cron: res.data[i].fimCron == null ? "INDEFINIDO" : this.getDataHora(res.data[i].fimCron)
           });
         }
@@ -104,6 +104,39 @@ export default {
     },
     irParaCadastro(){
       this.$router.push('eventos/cadastro')
+    },
+    cronParaHumanos(cron){
+      var stringCron = "";
+      var diasSemana = cron.split(" ")[5];
+      for(var i = 0; i < diasSemana.length; i++){
+          switch(diasSemana[i]){
+            case '0':
+              stringCron += "Dom,"
+              break;
+            case '1':
+              stringCron += "Seg,"
+              break;
+            case '2':
+              stringCron += "Ter,"
+              break;
+            case '3':
+              stringCron += "Qua,"
+              break;
+            case '4':
+              stringCron += "Qui,"
+              break;
+            case '5':
+              stringCron += "Sex,"
+              break;
+            case '6':
+              stringCron += "Sáb,"
+              break;
+            default:
+          }
+      }
+
+      stringCron += " às " + cron.split(" ")[2] + "h" + cron.split(" ")[1]
+      return stringCron;
     }
   },
   mounted() {
