@@ -16,12 +16,10 @@ export default {
   },
   methods: {
     putEvento() {
-      this.$http
-        .put("eventos", {
+      this.$http.put("eventos", {
           idEvento: this.evento.idEvento,
           cron: this.evento.cron,
           fimCron: this.evento.fimCron,
-          hora: this.evento.hora,
           idEquipamento: this.evento.idEquipamento,
           status: this.evento.status
         })

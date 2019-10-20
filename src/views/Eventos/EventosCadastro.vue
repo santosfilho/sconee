@@ -24,7 +24,6 @@ export default {
             this.$http.post('eventos', {
                 cron: this.evento.cron,
                 fimCron: this.evento.fimCron,
-                hora: this.evento.hora,
                 idEquipamento: this.evento.idEquipamento,
                 status: this.evento.status
             }).then(resp => {

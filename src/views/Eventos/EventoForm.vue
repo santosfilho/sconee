@@ -137,7 +137,6 @@ export default {
               this.diasEvento[j] = vetorDias.filter(value => {return value == j})[0] ? true : false
             }
           }
-
           this.montarCron();
         }
       });
@@ -153,32 +152,7 @@ export default {
           }
         }
       }
-      var dataProxEvento = new Date();
-      var vetorDias = dias.split(",");
 
-      //Mesmo dia? e hora maior q a atual? Show! Faz nada!
-      var praHoje =
-        vetorDias.filter(value => {
-          return (
-            dataProxEvento.getDay() == value && this.horaEvento > new Date().getHours() + ":" + new Date().getMinutes()
-          );
-        }).length > 0 ? true : false;
-
-      if (praHoje === false) {
-        var diasMaiores = vetorDias.filter(value => {return dataProxEvento.getDay() < value})[0]
-        var diasMenores = vetorDias.filter(value => {return dataProxEvento.getDay() >= value})[0];
-        //Há dias maiores q o atual? Pego o primeiro dia maior que o dia atual (atraves de um filter), calculo a diferença e adiciono os dias a data atual.. show!
-        if(diasMaiores != undefined){
-          dataProxEvento.setDate(dataProxEvento.getDate() + (dataProxEvento.getDay() - diasMaiores));
-        }
-
-        //Os dias são menores q o atual? Filtro os valores q são menores ou iguais e pego o primeiro valor do array, calculo a diferença e adiciono os dias a data atual!
-        if(diasMenores != undefined){
-          dataProxEvento.setDate(dataProxEvento.getDate() + (diasMenores - dataProxEvento.getDay()));
-        }
-      }
-
-      this.evento.hora = (dataProxEvento.toISOString()).split("T")[0] + "T" + this.horaEvento;
       this.evento.cron =
         "0 " + // Segundos (0 - 59).
         this.horaEvento.split(":")[1] + // Minutos (0 - 59).
