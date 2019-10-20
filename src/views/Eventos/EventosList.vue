@@ -46,8 +46,8 @@ export default {
             fim_cron:"Fim CRON",
             acao: ""
           },
-          sortable: ["status"],
-          filterable: ["status"]
+          sortable: ["status", "nomeEquipamento", "localizacao"],
+          filterable: ["status", "nomeEquipamento", "localizacao"]
         }
       },
       arrayEventos: []
@@ -107,34 +107,37 @@ export default {
     },
     cronParaHumanos(cron){
       var stringCron = "";
-      var diasSemana = cron.split(" ")[5];
-      for(var i = 0; i < diasSemana.length; i++){
-          switch(diasSemana[i]){
-            case '0':
-              stringCron += "Dom,"
-              break;
-            case '1':
-              stringCron += "Seg,"
-              break;
-            case '2':
-              stringCron += "Ter,"
-              break;
-            case '3':
-              stringCron += "Qua,"
-              break;
-            case '4':
-              stringCron += "Qui,"
-              break;
-            case '5':
-              stringCron += "Sex,"
-              break;
-            case '6':
-              stringCron += "Sáb,"
-              break;
-            default:
-          }
+      var diasSemana = cron.split(" ")[5].split(",");
+      if(diasSemana.length < 7){
+        for(var i = 0; i < diasSemana.length; i++){
+            switch(diasSemana[i]){
+              case '0':
+                stringCron += "Dom,"
+                break;
+              case '1':
+                stringCron += "Seg,"
+                break;
+              case '2':
+                stringCron += "Ter,"
+                break;
+              case '3':
+                stringCron += "Qua,"
+                break;
+              case '4':
+                stringCron += "Qui,"
+                break;
+              case '5':
+                stringCron += "Sex,"
+                break;
+              case '6':
+                stringCron += "Sáb,"
+                break;
+              default:
+            }
+        }
+      } else {
+        stringCron += "Todo dia"
       }
-
       stringCron += " às " + cron.split(" ")[2] + "h" + cron.split(" ")[1]
       return stringCron;
     }
