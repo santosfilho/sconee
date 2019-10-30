@@ -13,7 +13,6 @@
           <h5 class="card-subtitle mb-2 text">{{equipamento.localizacao}}</h5>
           <h6 class="card-subtitle mb-2 text">{{equipamento.descricao}}e</h6>
         </div>
-        
       </div>
     </div>
     <hr />
@@ -58,11 +57,14 @@ export default {
         (equipamento.status == 0 ? 1 : 0);
       var index = this.arrayEquipamentos.indexOf(equipamento);
       this.$http.put("equipamentos/mudar-status?" + params).then(res => {
-        this.arrayEquipamentos[index].status = equipamento.status == 0 ? 1 : 0;
-        this.arrayEquipamentos[index].classeStatus = {
-          ligado: this.arrayEquipamentos[index].status == 1 ? true : false,
-          desligado: this.arrayEquipamentos[index].status == 0 ? true : false
-        };
+        if (res.status == 200) {
+          this.arrayEquipamentos[index].status =
+            equipamento.status == 0 ? 1 : 0;
+          this.arrayEquipamentos[index].classeStatus = {
+            ligado: this.arrayEquipamentos[index].status == 1 ? true : false,
+            desligado: this.arrayEquipamentos[index].status == 0 ? true : false
+          };
+        }
       });
     },
     zerar() {
@@ -73,7 +75,7 @@ export default {
     arrayEquipamentos() {
       setTimeout(() => {
         this.getEquipamentos();
-      }, 5000);
+      }, 2500);
     }
   },
   mounted() {
